@@ -15,6 +15,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
+import { Route as AppProductIdRouteImport } from './routes/_app.product.$id'
 import { Route as AppCategorySlugRouteImport } from './routes/_app.category.$slug'
 
 const SignupRoute = SignupRouteImport.update({
@@ -46,6 +47,11 @@ const AppHomeRoute = AppHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AppRoute,
 } as any)
+const AppProductIdRoute = AppProductIdRouteImport.update({
+  id: '/product/$id',
+  path: '/product/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCategorySlugRoute = AppCategorySlugRouteImport.update({
   id: '/category/$slug',
   path: '/category/$slug',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/home': typeof AppHomeRoute
   '/category/$slug': typeof AppCategorySlugRoute
+  '/product/$id': typeof AppProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/home': typeof AppHomeRoute
   '/category/$slug': typeof AppCategorySlugRoute
+  '/product/$id': typeof AppProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/category/$slug': typeof AppCategorySlugRoute
+  '/_app/product/$id': typeof AppProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/home'
     | '/category/$slug'
+    | '/product/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/home'
     | '/category/$slug'
+    | '/product/$id'
   id:
     | '__root__'
     | '/'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_app/home'
     | '/_app/category/$slug'
+    | '/_app/product/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/product/$id': {
+      id: '/_app/product/$id'
+      path: '/product/$id'
+      fullPath: '/product/$id'
+      preLoaderRoute: typeof AppProductIdRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/category/$slug': {
       id: '/_app/category/$slug'
       path: '/category/$slug'
@@ -171,11 +190,13 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppHomeRoute: typeof AppHomeRoute
   AppCategorySlugRoute: typeof AppCategorySlugRoute
+  AppProductIdRoute: typeof AppProductIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppHomeRoute: AppHomeRoute,
   AppCategorySlugRoute: AppCategorySlugRoute,
+  AppProductIdRoute: AppProductIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
