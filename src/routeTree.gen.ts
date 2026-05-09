@@ -15,6 +15,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
+import { Route as AppCategorySlugRouteImport } from './routes/_app.category.$slug'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -45,6 +46,11 @@ const AppHomeRoute = AppHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCategorySlugRoute = AppCategorySlugRouteImport.update({
+  id: '/category/$slug',
+  path: '/category/$slug',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/home': typeof AppHomeRoute
+  '/category/$slug': typeof AppCategorySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/home': typeof AppHomeRoute
+  '/category/$slug': typeof AppCategorySlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +76,25 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_app/home': typeof AppHomeRoute
+  '/_app/category/$slug': typeof AppCategorySlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/forgot-password' | '/login' | '/signup' | '/home'
+  fullPaths:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/signup'
+    | '/home'
+    | '/category/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forgot-password' | '/login' | '/signup' | '/home'
+  to:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/signup'
+    | '/home'
+    | '/category/$slug'
   id:
     | '__root__'
     | '/'
@@ -82,6 +103,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_app/home'
+    | '/_app/category/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -136,15 +158,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHomeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/category/$slug': {
+      id: '/_app/category/$slug'
+      path: '/category/$slug'
+      fullPath: '/category/$slug'
+      preLoaderRoute: typeof AppCategorySlugRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppHomeRoute: typeof AppHomeRoute
+  AppCategorySlugRoute: typeof AppCategorySlugRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppHomeRoute: AppHomeRoute,
+  AppCategorySlugRoute: AppCategorySlugRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
