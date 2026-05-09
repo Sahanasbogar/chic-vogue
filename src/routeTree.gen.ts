@@ -15,6 +15,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppWishlistRouteImport } from './routes/_app.wishlist'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppOrdersRouteImport } from './routes/_app.orders'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppCheckoutRouteImport } from './routes/_app.checkout'
@@ -49,6 +50,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppWishlistRoute = AppWishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
 const AppOrdersRoute = AppOrdersRouteImport.update({
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof AppCheckoutRoute
   '/home': typeof AppHomeRoute
   '/orders': typeof AppOrdersRoute
+  '/profile': typeof AppProfileRoute
   '/wishlist': typeof AppWishlistRoute
   '/category/$slug': typeof AppCategorySlugRoute
   '/product/$id': typeof AppProductIdRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof AppCheckoutRoute
   '/home': typeof AppHomeRoute
   '/orders': typeof AppOrdersRoute
+  '/profile': typeof AppProfileRoute
   '/wishlist': typeof AppWishlistRoute
   '/category/$slug': typeof AppCategorySlugRoute
   '/product/$id': typeof AppProductIdRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/_app/checkout': typeof AppCheckoutRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/orders': typeof AppOrdersRoute
+  '/_app/profile': typeof AppProfileRoute
   '/_app/wishlist': typeof AppWishlistRoute
   '/_app/category/$slug': typeof AppCategorySlugRoute
   '/_app/product/$id': typeof AppProductIdRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/home'
     | '/orders'
+    | '/profile'
     | '/wishlist'
     | '/category/$slug'
     | '/product/$id'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/home'
     | '/orders'
+    | '/profile'
     | '/wishlist'
     | '/category/$slug'
     | '/product/$id'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/_app/checkout'
     | '/_app/home'
     | '/_app/orders'
+    | '/_app/profile'
     | '/_app/wishlist'
     | '/_app/category/$slug'
     | '/_app/product/$id'
@@ -218,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWishlistRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/orders': {
       id: '/_app/orders'
       path: '/orders'
@@ -268,6 +287,7 @@ interface AppRouteChildren {
   AppCheckoutRoute: typeof AppCheckoutRoute
   AppHomeRoute: typeof AppHomeRoute
   AppOrdersRoute: typeof AppOrdersRoute
+  AppProfileRoute: typeof AppProfileRoute
   AppWishlistRoute: typeof AppWishlistRoute
   AppCategorySlugRoute: typeof AppCategorySlugRoute
   AppProductIdRoute: typeof AppProductIdRoute
@@ -278,6 +298,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppCheckoutRoute: AppCheckoutRoute,
   AppHomeRoute: AppHomeRoute,
   AppOrdersRoute: AppOrdersRoute,
+  AppProfileRoute: AppProfileRoute,
   AppWishlistRoute: AppWishlistRoute,
   AppCategorySlugRoute: AppCategorySlugRoute,
   AppProductIdRoute: AppProductIdRoute,
