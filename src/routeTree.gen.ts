@@ -15,6 +15,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppWishlistRouteImport } from './routes/_app.wishlist'
+import { Route as AppOrdersRouteImport } from './routes/_app.orders'
 import { Route as AppHomeRouteImport } from './routes/_app.home'
 import { Route as AppCheckoutRouteImport } from './routes/_app.checkout'
 import { Route as AppCartRouteImport } from './routes/_app.cart'
@@ -48,6 +49,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppWishlistRoute = AppWishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOrdersRoute = AppOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
   getParentRoute: () => AppRoute,
 } as any)
 const AppHomeRoute = AppHomeRouteImport.update({
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/cart': typeof AppCartRoute
   '/checkout': typeof AppCheckoutRoute
   '/home': typeof AppHomeRoute
+  '/orders': typeof AppOrdersRoute
   '/wishlist': typeof AppWishlistRoute
   '/category/$slug': typeof AppCategorySlugRoute
   '/product/$id': typeof AppProductIdRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/cart': typeof AppCartRoute
   '/checkout': typeof AppCheckoutRoute
   '/home': typeof AppHomeRoute
+  '/orders': typeof AppOrdersRoute
   '/wishlist': typeof AppWishlistRoute
   '/category/$slug': typeof AppCategorySlugRoute
   '/product/$id': typeof AppProductIdRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/_app/cart': typeof AppCartRoute
   '/_app/checkout': typeof AppCheckoutRoute
   '/_app/home': typeof AppHomeRoute
+  '/_app/orders': typeof AppOrdersRoute
   '/_app/wishlist': typeof AppWishlistRoute
   '/_app/category/$slug': typeof AppCategorySlugRoute
   '/_app/product/$id': typeof AppProductIdRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/checkout'
     | '/home'
+    | '/orders'
     | '/wishlist'
     | '/category/$slug'
     | '/product/$id'
@@ -136,6 +146,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/checkout'
     | '/home'
+    | '/orders'
     | '/wishlist'
     | '/category/$slug'
     | '/product/$id'
@@ -149,6 +160,7 @@ export interface FileRouteTypes {
     | '/_app/cart'
     | '/_app/checkout'
     | '/_app/home'
+    | '/_app/orders'
     | '/_app/wishlist'
     | '/_app/category/$slug'
     | '/_app/product/$id'
@@ -206,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWishlistRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/orders': {
+      id: '/_app/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AppOrdersRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/home': {
       id: '/_app/home'
       path: '/home'
@@ -248,6 +267,7 @@ interface AppRouteChildren {
   AppCartRoute: typeof AppCartRoute
   AppCheckoutRoute: typeof AppCheckoutRoute
   AppHomeRoute: typeof AppHomeRoute
+  AppOrdersRoute: typeof AppOrdersRoute
   AppWishlistRoute: typeof AppWishlistRoute
   AppCategorySlugRoute: typeof AppCategorySlugRoute
   AppProductIdRoute: typeof AppProductIdRoute
@@ -257,6 +277,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppCartRoute: AppCartRoute,
   AppCheckoutRoute: AppCheckoutRoute,
   AppHomeRoute: AppHomeRoute,
+  AppOrdersRoute: AppOrdersRoute,
   AppWishlistRoute: AppWishlistRoute,
   AppCategorySlugRoute: AppCategorySlugRoute,
   AppProductIdRoute: AppProductIdRoute,
@@ -274,3 +295,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
